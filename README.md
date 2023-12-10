@@ -106,8 +106,18 @@ the equation equations are different for each model, which is since the data ran
 ### Task 13. After finding well-functioning models, you will use next an automated method for finding a good model. Use the EON Tuner2 to automatically search for a good model. This might take a while.
 
 #### Question 11. Did the EON Tuner come up with a better model than you? If so, in which regard is it better? Is it still better when you limit it to using only accelerometer data? (To answer the latter question, first answer Question 12.)
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/832cd71d-e160-4c36-bf78-a7ac1b9b8058)
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ce15e9e0-6650-47bf-afd9-f01aed9ad4ec)
+
+# TODO: 
 
 #### Question 12. If the EON tuner resulted in a better model, use this model as well in the Model Testing section and add its results to the plots you created in Question 10. Please note: Before doing so, save your current version with the versioning tool on the left.
+
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/a60a288d-63cc-4c89-b39e-d7a438f627c8)
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c620b12a-62cb-4c7d-84bd-de1211bf4965)
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/feaf35bd-f617-4429-b101-ca10d25a9be8)
+
+# TODO: 
 
 ### Task 14. From this task onward, we will only use your best performing model. Save your previous state with the Versioning tool in Edge Impulse, and afterward remove all blocks no longer needed from your impulse design. Train your impulse one more time.
 
