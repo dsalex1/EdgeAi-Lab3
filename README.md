@@ -99,7 +99,11 @@ the equation equations are different for each model, which is since the data ran
 
 #### Question 10. How good do your models classify the test data? Do the models generalize well? Create plots comparing your models. Also explain F1 Score and Uncertainty displayed in the confusion matrix.
 
-# TODO: plots comparing models, google f1 score uncertainty in confusion matrix
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/59fbcea3-70d5-4d12-83d6-c7eb8c9582a1)
+spectral features: ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c3d3ab65-303d-4360-abdf-56f80a0071f1)
+flatten: ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/4ceab9ed-8fde-4b4d-bc2c-d9322a85bc28)
+raw data: ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/cf169bc9-0164-433a-9ab3-cb2a9e313045)
+result: ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ca278f1c-fb64-4cdd-9ae8-165f75bfe9aa)
 
 the F1 score is a metric for assessing classification performance, it is helpful when using unbalanced data.
 
@@ -119,9 +123,6 @@ The EON models didnt perform better than our model, however, it presented change
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/a60a288d-63cc-4c89-b39e-d7a438f627c8)
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c620b12a-62cb-4c7d-84bd-de1211bf4965)
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/feaf35bd-f617-4429-b101-ca10d25a9be8)
-
-# TODO: plots in question 10
-
 
 ### Task 14. From this task onward, we will only use your best performing model. Save your previous state with the Versioning tool in Edge Impulse, and afterward remove all blocks no longer needed from your impulse design. Train your impulse one more time.
 
