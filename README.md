@@ -99,17 +99,20 @@ the equation equations are different for each model, which is since the data ran
 
 #### Question 10. How good do your models classify the test data? Do the models generalize well? Create plots comparing your models. Also explain F1 Score and Uncertainty displayed in the confusion matrix.
 
-# TODO: 
+# TODO: plots comparing models, google f1 score uncertainty in confusion matrix
+
+the F1 score is a metric for assessing classification performance, it is helpful when using unbalanced data.
 
 ### Task 12. If your models didn’t perform well, head back to the data acquisition and record additional data and/or modify your models with the knowledge you have to avoid overfitting.
 
 ### Task 13. After finding well-functioning models, you will use next an automated method for finding a good model. Use the EON Tuner2 to automatically search for a good model. This might take a while.
 
 #### Question 11. Did the EON Tuner come up with a better model than you? If so, in which regard is it better? Is it still better when you limit it to using only accelerometer data? (To answer the latter question, first answer Question 12.)
+
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/832cd71d-e160-4c36-bf78-a7ac1b9b8058)
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ce15e9e0-6650-47bf-afd9-f01aed9ad4ec)
 
-# TODO: 
+The EON models didnt perform better than our model, however, it presented changes that lead to the manual discovery of a better architecture for our model. 
 
 #### Question 12. If the EON tuner resulted in a better model, use this model as well in the Model Testing section and add its results to the plots you created in Question 10. Please note: Before doing so, save your current version with the versioning tool on the left.
 
@@ -117,7 +120,8 @@ the equation equations are different for each model, which is since the data ran
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c620b12a-62cb-4c7d-84bd-de1211bf4965)
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/feaf35bd-f617-4429-b101-ca10d25a9be8)
 
-# TODO: 
+# TODO: plots in question 10
+
 
 ### Task 14. From this task onward, we will only use your best performing model. Save your previous state with the Versioning tool in Edge Impulse, and afterward remove all blocks no longer needed from your impulse design. Train your impulse one more time.
 
@@ -127,11 +131,19 @@ the equation equations are different for each model, which is since the data ran
 
 #### Question 13. Explain the output of the classification results. Does your model work? Did it misclassify some timestamps? Is this a bad thing? Why (not)?
 
+The Model does generally work, some edge cases especially L-Shapes sometimes have misclassified timestamps. This doesnt pose any problem since the detection is by majority vote. It only becomes a problem if too many frames are misclassified.
+
 ### Task 16. Try the live classification with another Arduino board.
 
 #### Question 14. Does the classification also work for another board? How does the performance compare when you use a board other than the one you used for collecting training data?
 
+It does work very similar to exactly the same on other boards, since the accelerometer is likely the exact same for different boards, and even if they differ given that the sensors are calibrated properly, they will output the same values.
+
 ### Task 17. Head to Devices and add your phone as an additional device. You can just scan the QR Code for this. Now perform live classification with your phone. Question 15. Does the classification also work for your phone? If it doesn’t, why not? Does the performance change when you change the orientation of your phone? In which orientation do you have to hold your phone for it to work best?
+
+### Question 15. Does the classification also work for your phone? If it doesn’t, why not? Does the performance change when you change the orientation of your phone? In which orientation do you have to hold your phone for it to work best?
+
+It does work similarly on smartphones, it is more sensitive to the orientation of the phone, this is maybe due to sensor fusion being used in the phone or higher inertia of the phone when being moved. It works best in a unaligned orientation.
 
 ## Part 6 – Deployment
 
@@ -139,13 +151,65 @@ the equation equations are different for each model, which is since the data ran
 
 #### Question 16. What is the EON Compiler, and why is the memory usage so different between the two libraries? Compare the models included in the two libraries (in src > tflite-model). How do they differ? What makes one of them smaller?
 
+EON is a compiler that transforms tensorflow lite models to c++ code. It archives a smaller file size by removing meta data. 
+
+The data preprocessing contributes the majority of the total time, also the RAM usage is larger for the preprocessing compared to the inference. because of this the total inference time and ram usage does not differ between the EON and non-EON model, only the flash usage is significantly smaller, since 
+
+No Eon (int8): |prep. | inf.  | total
+---------------|------|-------|--------
+Inference:| 16ms | 1ms   | 17ms
+RAM:    |   3.1K | 3.1K  | 3.1K
+FLASH:  |        | 36.5k|
+Accuracy: ||    |93.69%
+    
+EON (int8):      |prep. | inf.  | total
+-----------------|------|-------|------
+Inteference:| 16ms | 1ms | 17ms
+RAM:        | 3.1K | 1.4K | 3.1K
+FLASH:      |      | 16.8K|
+Accuracy: ||   |93.69%
+    
+
 ### Task 19. Include the libraries into your Arduino IDE (Add .ZIP Library...). Open theaccelerometer example that comes with your library and flash it to your board. Open a serial monitor.
 
 #### Question 17. Explain the Arduino program and the output of the serial monitor. Also, why is there a reference to numpy in the Arduino program? How is that possible in C++? Evaluate how well and how fast the classification works for each of your motions. Is there a difference in performance between the two Arduino libraries?
+
+The Setup of the Arduino program Starts Serial and the IMU. In the loop the IMU is read and preprocessed, and the run through our classifier. also the time taken for preprocessing, classifying, anomaly and then classification results are printed
+
+EON:
+
+    Starting inferencing in 2 seconds...
+    Sampling...
+    Predictions (DSP: 22 ms., Classification: 0 ms., Anomaly: 0 ms.): 
+        Idle: 0.99609
+        L-Shape: 0.00000
+        O-Shape: 0.00000
+        S-Shape: 0.00000
+NO-EON:
+
+    Starting inferencing in 2 seconds...
+    Sampling...
+    Predictions (DSP: 22 ms., Classification: 1 ms., Anomaly: 0 ms.): 
+        Idle: 0.00000
+        L-Shape: 0.00781
+        O-Shape: 0.96094
+        S-Shape: 0.03516
+
+The EON and non-EON variant ebhave almost the same mainly because the processing time is cominated by the signal preprocessing. The serial output contains a reference time from which a sample is taken. the output it provides includes the timing used for the DSP, classification and anomaly detection (a feature we are not using). After which it gives us the classification results for all our classes. All classifications work as accurate as predicted. 
+
+Numpy is available in c++ because the Edge Impulse SDK implemented it porting the python interfaces for its native c code.
 
 ### Task 20. Open the continuous accelerometer example that comes with your library and flash it to your board. Open a serial monitor.
 
 #### Question 18. Explain the Arduino program and the output of the serial monitor. How does it differ from the previous program? Does it use multithreading? If so, how? How well does the continuous mode work? Under which circumstances would you use either of the two modes? What applications would require the one or the other mode?
 
+The Setup of the Arduino program Starts Serial, the IMU, and the inference_thread used for multi threading. In the loop the IMU is sampled into a rolling buffer. the started thread runs the inference on the sampled data. THe sampling thread and inference thread run concurrently but not parallel. The continuous mode works well since the sampling window is far larger than our inference time, the continious mode would work well for scenarious where data may not be missed such as key word spotting. non continous mode would work for scenarios where the start of an event is known, such as a sensory input of some other kind, especially also when the inference time is larger than the sampling window
+
+Predictions (DSP: 25 ms., Classification: 3 ms., Anomaly: 0 ms.): O-Shape  [ 0, 0, 7, 0, 3, 0, ]
+the various timing are displayed again in a different format, the resulting inferred class is printed, and the class predictions, certainties and anomaly detection is printed in the array.
+
 #### Question 19. Discuss the pros and cons of Edge Impulse. When should one use it and when rather not? Also elaborate on the privacy and ethical aspects of using Edge Impulse versus building a model locally.
 
+Edge impulse makes it easier to develop edge ai models and allows for rapid prototyping. however it may lack customization (for the free version at least) and the cloud processing might a problem for sensitive data.
+
+therefore it works well, for scenarios where rapid development is desireable while sensitive data and extensive customization without payment are not required.
