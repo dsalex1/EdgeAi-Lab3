@@ -22,11 +22,12 @@ The O shape looks sinusodial in one or more dimensions. The S shape looks wavey,
 
 #### Question 2. Is it sufficient to record data for your classes, or do you also need a baseline without any movement? Explain why you (don’t) need idle data.
 
-yes we need an idle state, because the model tends to be over convident if it was no idle state to compare against, in our case it worked out better with an idle state
+Yes we need an idle state, because the model tends to be over convident if it has no idle state to compare against, in our case it worked out better with an idle state
 
 ### Task 5. If you need idle data, record the same amount of data without moving the device as for each of the classes.
 
 ### Task 6. Split your data into train and test data.
+
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/404fe33c-c847-4ed6-b8e0-91724e85727e)
 
 ## Part 3 – Impulse Design
@@ -36,25 +37,28 @@ yes we need an idle state, because the model tends to be over convident if it wa
 #### Question 3. Which settings did you choose in the Time series data input block? Explain what these settings do and why you think that your choices are a good choice.
 
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/3dcb881e-1217-4640-b738-cef6b66e5ae2)
-within 4 seconds there is at least one full movement, so it captures all features neccessary to indentify the shape. 200ms movement allows us to generate many samples, also it was the smalles possible size that works within the free tier of edgeimpulse, also this allows for a reasonable fast inference time.
+
+Within 4 seconds there is at least one full movement, so it captures all features neccessary to indentify the shape. 200ms movement allows us to generate many samples, also it was the smalles possible size that works within the free tier of edgeimpulse without timing out, also this allows for a reasonable fast inference time.
 
 ### Task 8. Explore the different preprocessing blocks and generate features.
 
 #### Question 4. What do the different preprocessing blocks do? Explain them. Why should we use preprocessing blocks instead of feeding the data directly into the neural network like in the previous labs?
 
-preprocessing allows our data to amplify the features that we actually care about, for example spectral analysis allows us to have the model notice 
-the different frequencies present in the input data directly instead of haveing the model have to figure out that itself. Flatten flattens all data in an axis down to a single value, similar to an average. also there is raw data which doesnt add any preprocessing
+Preprocessing allows our data to amplify the features that we actually care about, for example spectral analysis allows us to have the model notice 
+the different frequencies present in the input data directly instead of haveing the model have to figure out that itself. Flatten flattens all data in an axis down to a single value, similar to an average. Also there is raw data which doesnt add any preprocessing.
 
 #### Question 5. Which preprocessing block creates the best features separating the classes? Add screenshots. What kind of features did the blocks extract?
 
 flatten:
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/55c9af20-fef1-4b6e-a2de-fa3bed916883)
+
 raw data:
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/db5075b5-b3a9-4890-b9eb-d48eba1eda83)
+
 spectral analysis:
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/848c7708-34ac-411c-a900-58b1cfbf936b)
 
-the spectral analysis seperated the samples based on how wavey or flat their data is.
+The spectral analysis seperated the samples based on how wavey or flat their data is. For the others it was a bit more difficult to see what the distinction criterias were (given the multidimensional reduction to the 2/3d space).
 
 ### Task 9. Continue with at least the Spectral Analysis and the Raw Data blocks.
 
@@ -64,16 +68,18 @@ the spectral analysis seperated the samples based on how wavey or flat their dat
 
 #### Question 7. Briefly explain your models. Focus in your explanation on the parts of the code deviating from the network architectures you used in the previous labs. E.g., what is activity regularizer=tf.keras.regularizers.l1(0.00001)? Include the code for your models in your submission.
 
-The code uses batches, which we previously did not explicitly. also the batches are not shuffled which makes the training deterministic, meaning that training with the same hyperparameters whould lead to the same model.
+The code uses batches, which we previously did not explicitly. also the batches are optionally not shuffled which makes the training deterministic, meaning that training with the same hyperparameters whould lead to the same model.
 
-also we use an l1 regularization for the weights and parameters, which aims to prevent overfitting, by making certain values smaller to reduce the impact of noise.
+Also we use an l1 regularization for the weights and parameters, which aims to prevent overfitting, by making certain values smaller to reduce the impact of noise.
 
 #### Question 8. What is the training performance of the models? How much memory is your model expected to need? What execution time is estimated? You can add screenshots. Check also for the memory usage and execution time of your DSP blocks.
 
 flattened: 
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/d607af92-2bfd-4e2c-99be-9d9b1f86998a)
+
 spectral:
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/3e474135-ff02-4360-bfc7-a271873dd8a0)
+
 raw data:
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/b5b074c1-3704-4234-bfaa-18f5d97f6b0c)
 
@@ -91,7 +97,7 @@ flattened:
 raw data:
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/2698a8f3-798b-43aa-ab69-4649e76a7016)
 
-the equation equations are different for each model, which is since the data ranges going into these layers are vastly different due to the preprocessing.
+The equation equations are different for each model, which is since the data ranges going into these layers are vastly different due to the preprocessing.
 
 ## Part 4 – Model Testing
 
@@ -100,12 +106,20 @@ the equation equations are different for each model, which is since the data ran
 #### Question 10. How good do your models classify the test data? Do the models generalize well? Create plots comparing your models. Also explain F1 Score and Uncertainty displayed in the confusion matrix.
 
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/59fbcea3-70d5-4d12-83d6-c7eb8c9582a1)
-spectral features: ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c3d3ab65-303d-4360-abdf-56f80a0071f1)
-flatten: ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/4ceab9ed-8fde-4b4d-bc2c-d9322a85bc28)
-raw data: ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/cf169bc9-0164-433a-9ab3-cb2a9e313045)
-result: ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ca278f1c-fb64-4cdd-9ae8-165f75bfe9aa)
 
-the F1 score is a metric for assessing classification performance, it is helpful when using unbalanced data.
+spectral features:
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c3d3ab65-303d-4360-abdf-56f80a0071f1)
+
+flatten:
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/4ceab9ed-8fde-4b4d-bc2c-d9322a85bc28)
+
+raw data:
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/cf169bc9-0164-433a-9ab3-cb2a9e313045)
+
+result:
+![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ca278f1c-fb64-4cdd-9ae8-165f75bfe9aa)
+
+the F1 score is a metric for assessing classification performance, made out of the precision (how often a model makes the correct prediction) and recall (how many predications in a dataset where identified corretly).
 
 ### Task 12. If your models didn’t perform well, head back to the data acquisition and record additional data and/or modify your models with the knowledge you have to avoid overfitting.
 
@@ -114,14 +128,17 @@ the F1 score is a metric for assessing classification performance, it is helpful
 #### Question 11. Did the EON Tuner come up with a better model than you? If so, in which regard is it better? Is it still better when you limit it to using only accelerometer data? (To answer the latter question, first answer Question 12.)
 
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/832cd71d-e160-4c36-bf78-a7ac1b9b8058)
+
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ce15e9e0-6650-47bf-afd9-f01aed9ad4ec)
 
-The EON models didnt perform better than our model, however, it presented changes that lead to the manual discovery of a better architecture for our model. 
+The EON models didnt perform better than our model, however, it presented changes that lead to the manual discovery of a better architecture for our model. We only collected accelerometer data in our earlier tasks so we did not test how it works with more data.
 
 #### Question 12. If the EON tuner resulted in a better model, use this model as well in the Model Testing section and add its results to the plots you created in Question 10. Please note: Before doing so, save your current version with the versioning tool on the left.
 
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/a60a288d-63cc-4c89-b39e-d7a438f627c8)
+
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c620b12a-62cb-4c7d-84bd-de1211bf4965)
+
 ![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/feaf35bd-f617-4429-b101-ca10d25a9be8)
 
 ### Task 14. From this task onward, we will only use your best performing model. Save your previous state with the Versioning tool in Edge Impulse, and afterward remove all blocks no longer needed from your impulse design. Train your impulse one more time.
@@ -132,19 +149,19 @@ The EON models didnt perform better than our model, however, it presented change
 
 #### Question 13. Explain the output of the classification results. Does your model work? Did it misclassify some timestamps? Is this a bad thing? Why (not)?
 
-The Model does generally work, some edge cases especially L-Shapes sometimes have misclassified timestamps. This doesnt pose any problem since the detection is by majority vote. It only becomes a problem if too many frames are misclassified.
+The Model does generally work, some edge cases especially L-Shapes sometimes have misclassified timestamps. This doesnt pose any problem since the detection is by a specific percentage of samples (75%) being the same. It only becomes a problem if too many frames are misclassified or uncertain.
 
 ### Task 16. Try the live classification with another Arduino board.
 
 #### Question 14. Does the classification also work for another board? How does the performance compare when you use a board other than the one you used for collecting training data?
 
-It does work very similar to exactly the same on other boards, since the accelerometer is likely the exact same for different boards, and even if they differ given that the sensors are calibrated properly, they will output the same values.
+It does work very similar to exactly the same on other boards, since the accelerometer is the exact same for different boards and they are calibrated similarly, so they will output the same values.
 
 ### Task 17. Head to Devices and add your phone as an additional device. You can just scan the QR Code for this. Now perform live classification with your phone. Question 15. Does the classification also work for your phone? If it doesn’t, why not? Does the performance change when you change the orientation of your phone? In which orientation do you have to hold your phone for it to work best?
 
 ### Question 15. Does the classification also work for your phone? If it doesn’t, why not? Does the performance change when you change the orientation of your phone? In which orientation do you have to hold your phone for it to work best?
 
-It does work similarly on smartphones, it is more sensitive to the orientation of the phone, this is maybe due to sensor fusion being used in the phone or higher inertia of the phone when being moved. It works best in a unaligned orientation.
+It does work similarly but worse on smartphones, it is more sensitive to the orientation of the phone, this is maybe due to sensor fusion being used in the phone or higher inertia of the phone when being moved. It works best in a unaligned orientation.
 
 ## Part 6 – Deployment
 
@@ -152,9 +169,9 @@ It does work similarly on smartphones, it is more sensitive to the orientation o
 
 #### Question 16. What is the EON Compiler, and why is the memory usage so different between the two libraries? Compare the models included in the two libraries (in src > tflite-model). How do they differ? What makes one of them smaller?
 
-EON is a compiler that transforms tensorflow lite models to c++ code. It archives a smaller file size by removing meta data. 
+EON is a compiler that transforms tensorflow lite models to c++ code. It archives a smaller file size by removing meta data and optimized compiling of the otherwise interpreted code.
 
-The data preprocessing contributes the majority of the total time, also the RAM usage is larger for the preprocessing compared to the inference. because of this the total inference time and ram usage does not differ between the EON and non-EON model, only the flash usage is significantly smaller, since 
+The data preprocessing contributes the majority of the total time, also the RAM usage is larger for the preprocessing compared to the inference. because of this the total inference time and ram usage does not differ between the EON and non-EON model, only the flash usage is significantly smaller: 
 
 No Eon (int8): |prep. | inf.  | total
 ---------------|------|-------|--------
@@ -196,18 +213,18 @@ NO-EON:
         O-Shape: 0.96094
         S-Shape: 0.03516
 
-The EON and non-EON variant ebhave almost the same mainly because the processing time is cominated by the signal preprocessing. The serial output contains a reference time from which a sample is taken. the output it provides includes the timing used for the DSP, classification and anomaly detection (a feature we are not using). After which it gives us the classification results for all our classes. All classifications work as accurate as predicted. 
+The EON and non-EON variant behave almost the same mainly because the processing time is cominated by the signal preprocessing. The serial output contains a reference time from which a sample is taken. the output it provides includes the timing used for the DSP, classification and anomaly detection (a feature we are not using). After which it gives us the classification results for all our classes. Within our testing the classifications work as expected for all classes. 
 
-Numpy is available in c++ because the Edge Impulse SDK implemented it porting the python interfaces for its native c code.
+Numpy is available here in C++ because the Edge Impulse SDK implemented it by porting the python code they want to use to native C++ (in the DSP folder).
 
 ### Task 20. Open the continuous accelerometer example that comes with your library and flash it to your board. Open a serial monitor.
 
 #### Question 18. Explain the Arduino program and the output of the serial monitor. How does it differ from the previous program? Does it use multithreading? If so, how? How well does the continuous mode work? Under which circumstances would you use either of the two modes? What applications would require the one or the other mode?
 
-The Setup of the Arduino program Starts Serial, the IMU, and the inference_thread used for multi threading. In the loop the IMU is sampled into a rolling buffer. the started thread runs the inference on the sampled data. THe sampling thread and inference thread run concurrently but not parallel. The continuous mode works well since the sampling window is far larger than our inference time, the continious mode would work well for scenarious where data may not be missed such as key word spotting. non continous mode would work for scenarios where the start of an event is known, such as a sensory input of some other kind, especially also when the inference time is larger than the sampling window
+The Setup of the Arduino program Starts Serial, the IMU, and the inference_thread used for multi threading. In the loop the IMU is sampled into a rolling buffer. the started thread runs the inference on the sampled data. The sampling thread and inference thread run concurrently but not parallel (cooperative scheuduling through yielding at delay). The continuous mode works well since the sampling window is far larger than our inference time, the continious mode would work well for scenarious where data may not be missed such as key word spotting. non continous mode would work for scenarios where the start of an event is known, such as a sensory input of some other kind, especially also when the inference time is larger than the sampling window
 
 Predictions (DSP: 25 ms., Classification: 3 ms., Anomaly: 0 ms.): O-Shape  [ 0, 0, 7, 0, 3, 0, ]
-the various timing are displayed again in a different format, the resulting inferred class is printed, and the class predictions, certainties and anomaly detection is printed in the array.
+The various timing are displayed again in a different format, the resulting inferred class is printed, and the class predictions, uncertainty and anomaly detection (which we do not use) is printed in the array.
 
 #### Question 19. Discuss the pros and cons of Edge Impulse. When should one use it and when rather not? Also elaborate on the privacy and ethical aspects of using Edge Impulse versus building a model locally.
 
