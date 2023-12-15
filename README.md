@@ -1,10 +1,10 @@
-﻿# EdgeAi-Lab3
+# EdgeAi-Lab3
  
 ## Part 1 – Setup
 
 ### Task 1. Create a new project in Edge Impulse.
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/a71739eb-2a1a-42e2-8b3e-d33a0fba31d5)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/a71739eb-2a1a-42e2-8b3e-d33a0fba31d5)
 
 ### Task 2. Install the Edge Impulse CLI and Arduino CLI 1
 
@@ -12,7 +12,7 @@
 
 ### Task 3. Collect data
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/daefa805-a5b9-4640-a97b-ce25c55452f3)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/daefa805-a5b9-4640-a97b-ce25c55452f3)
 
 ### Task 4. Look at your data.
 
@@ -28,7 +28,7 @@ Yes we need an idle state, because the model tends to be over convident if it ha
 
 ### Task 6. Split your data into train and test data.
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/404fe33c-c847-4ed6-b8e0-91724e85727e)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/404fe33c-c847-4ed6-b8e0-91724e85727e)
 
 ## Part 3 – Impulse Design
 
@@ -36,7 +36,7 @@ Yes we need an idle state, because the model tends to be over convident if it ha
 
 #### Question 3. Which settings did you choose in the Time series data input block? Explain what these settings do and why you think that your choices are a good choice.
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/3dcb881e-1217-4640-b738-cef6b66e5ae2)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/3dcb881e-1217-4640-b738-cef6b66e5ae2)
 
 Within 4 seconds there is at least one full movement, so it captures all features neccessary to indentify the shape. 200ms movement allows us to generate many samples, also it was the smalles possible size that works within the free tier of edgeimpulse without timing out, also this allows for a reasonable fast inference time.
 
@@ -50,13 +50,16 @@ the different frequencies present in the input data directly instead of haveing 
 #### Question 5. Which preprocessing block creates the best features separating the classes? Add screenshots. What kind of features did the blocks extract?
 
 flatten:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/55c9af20-fef1-4b6e-a2de-fa3bed916883)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/55c9af20-fef1-4b6e-a2de-fa3bed916883)
 
 raw data:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/db5075b5-b3a9-4890-b9eb-d48eba1eda83)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/db5075b5-b3a9-4890-b9eb-d48eba1eda83)
 
 spectral analysis:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/848c7708-34ac-411c-a900-58b1cfbf936b)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/848c7708-34ac-411c-a900-58b1cfbf936b)
 
 The spectral analysis seperated the samples based on how wavey or flat their data is. For the others it was a bit more difficult to see what the distinction criterias were (given the multidimensional reduction to the 2/3d space).
 
@@ -75,13 +78,16 @@ Also we use an l1 regularization for the weights and parameters, which aims to p
 #### Question 8. What is the training performance of the models? How much memory is your model expected to need? What execution time is estimated? You can add screenshots. Check also for the memory usage and execution time of your DSP blocks.
 
 flattened: 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/d607af92-2bfd-4e2c-99be-9d9b1f86998a)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/d607af92-2bfd-4e2c-99be-9d9b1f86998a)
 
 spectral:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/3e474135-ff02-4360-bfc7-a271873dd8a0)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/3e474135-ff02-4360-bfc7-a271873dd8a0)
 
 raw data:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/b5b074c1-3704-4234-bfaa-18f5d97f6b0c)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/b5b074c1-3704-4234-bfaa-18f5d97f6b0c)
 
 
 ### Task 10. Head to your dashboard and download the quantized models of your classifiers. Head to https://netron.app/ and open your models with it. Click on the input or output layer and take a look at the quantization equations.
@@ -89,13 +95,16 @@ raw data:
 #### Question 9. Are the quantization equations the same for each of your classifiers? Why (not)?
 
 spectral:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ca1108d7-1758-4a2a-bb0d-ed856ab3a221)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ca1108d7-1758-4a2a-bb0d-ed856ab3a221)
 
 flattened:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/adcc92c0-4e60-4cc1-81b6-0dd3f672956b)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/adcc92c0-4e60-4cc1-81b6-0dd3f672956b)
 
 raw data:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/2698a8f3-798b-43aa-ab69-4649e76a7016)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/2698a8f3-798b-43aa-ab69-4649e76a7016)
 
 The equation equations are different for each model, which is since the data ranges going into these layers are vastly different due to the preprocessing.
 
@@ -105,19 +114,23 @@ The equation equations are different for each model, which is since the data ran
 
 #### Question 10. How good do your models classify the test data? Do the models generalize well? Create plots comparing your models. Also explain F1 Score and Uncertainty displayed in the confusion matrix.
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/59fbcea3-70d5-4d12-83d6-c7eb8c9582a1)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/59fbcea3-70d5-4d12-83d6-c7eb8c9582a1)
 
 spectral features:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c3d3ab65-303d-4360-abdf-56f80a0071f1)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c3d3ab65-303d-4360-abdf-56f80a0071f1)
 
 flatten:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/4ceab9ed-8fde-4b4d-bc2c-d9322a85bc28)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/4ceab9ed-8fde-4b4d-bc2c-d9322a85bc28)
 
 raw data:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/cf169bc9-0164-433a-9ab3-cb2a9e313045)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/cf169bc9-0164-433a-9ab3-cb2a9e313045)
 
 result:
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ca278f1c-fb64-4cdd-9ae8-165f75bfe9aa)
+
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ca278f1c-fb64-4cdd-9ae8-165f75bfe9aa)
 
 the F1 score is a metric for assessing classification performance, made out of the precision (how often a model makes the correct prediction) and recall (how many predications in a dataset where identified corretly).
 
@@ -127,19 +140,19 @@ the F1 score is a metric for assessing classification performance, made out of t
 
 #### Question 11. Did the EON Tuner come up with a better model than you? If so, in which regard is it better? Is it still better when you limit it to using only accelerometer data? (To answer the latter question, first answer Question 12.)
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/832cd71d-e160-4c36-bf78-a7ac1b9b8058)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/832cd71d-e160-4c36-bf78-a7ac1b9b8058)
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ce15e9e0-6650-47bf-afd9-f01aed9ad4ec)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/ce15e9e0-6650-47bf-afd9-f01aed9ad4ec)
 
 The EON models didnt perform better than our model, however, it presented changes that lead to the manual discovery of a better architecture for our model. We only collected accelerometer data in our earlier tasks so we did not test how it works with more data.
 
 #### Question 12. If the EON tuner resulted in a better model, use this model as well in the Model Testing section and add its results to the plots you created in Question 10. Please note: Before doing so, save your current version with the versioning tool on the left.
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/a60a288d-63cc-4c89-b39e-d7a438f627c8)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/a60a288d-63cc-4c89-b39e-d7a438f627c8)
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c620b12a-62cb-4c7d-84bd-de1211bf4965)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/c620b12a-62cb-4c7d-84bd-de1211bf4965)
 
-![image](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/feaf35bd-f617-4429-b101-ca10d25a9be8)
+![](https://github.com/dsalex1/EdgeAi-Lab3/assets/25539263/feaf35bd-f617-4429-b101-ca10d25a9be8)
 
 ### Task 14. From this task onward, we will only use your best performing model. Save your previous state with the Versioning tool in Edge Impulse, and afterward remove all blocks no longer needed from your impulse design. Train your impulse one more time.
 
